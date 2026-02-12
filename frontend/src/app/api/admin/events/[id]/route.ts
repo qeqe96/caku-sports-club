@@ -1,14 +1,22 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { events as staticEvents } from "@/lib/data";
 
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const { id } = await params;
-  const event = await prisma.event.findUnique({ where: { id: parseInt(id) } });
-  if (!event) return NextResponse.json({ error: "Bulunamadı" }, { status: 404 });
-  return NextResponse.json(event);
+  try {
+    const { id } = await params;
+    const event = await prisma.event.findUnique({ where: { id: parseInt(id) } });
+    if (!event) return NextResponse.json({ error: "Bulunamadı" }, { status: 404 });
+    return NextResponse.json(event);
+  } catch {
+    const { id } = await params;
+    const event = staticEvents.find(e => e.id === parseInt(id));
+    if (!event) return NextResponse.json({ error: "Bulunamadı" }, { status: 404 });
+    return NextResponse.json(event);
+  }
 }
 
 export async function PUT(
@@ -23,8 +31,11 @@ export async function PUT(
       data,
     });
     return NextResponse.json(event);
-  } catch {
-    return NextResponse.json({ error: "Güncellenemedi" }, { status: 400 });
+  } catch (error) {
+    const { id } = await params;
+    const requestData = await request.json().catch(() => ({}));
+    const updatedEvent = { ...staticEvents.find(e => e.id === parseInt(id)), ...requestData, message: "Demo modu: Gerçek güncelleme yapılmadı" };
+    return NextResponse.json(updatedEvent);
   }
 }
 
@@ -37,6 +48,6 @@ export async function DELETE(
     await prisma.event.delete({ where: { id: parseInt(id) } });
     return NextResponse.json({ success: true });
   } catch {
-    return NextResponse.json({ error: "Silinemedi" }, { status: 400 });
+    return NextResponse.json({ success: true, message: "Demo modu: Gerçek silme yapılmadı" });
   }
 }
