@@ -1,14 +1,22 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { teams as staticTeams } from "@/lib/data";
 
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const { id } = await params;
-  const team = await prisma.team.findUnique({ where: { id: parseInt(id) } });
-  if (!team) return NextResponse.json({ error: "Bulunamadı" }, { status: 404 });
-  return NextResponse.json(team);
+  try {
+    const { id } = await params;
+    const team = await prisma.team.findUnique({ where: { id: parseInt(id) } });
+    if (!team) return NextResponse.json({ error: "Bulunamadı" }, { status: 404 });
+    return NextResponse.json(team);
+  } catch {
+    const { id } = await params;
+    const team = staticTeams.find(t => t.id === parseInt(id));
+    if (!team) return NextResponse.json({ error: "Bulunamadı" }, { status: 404 });
+    return NextResponse.json(team);
+  }
 }
 
 export async function PUT(
@@ -23,8 +31,11 @@ export async function PUT(
       data,
     });
     return NextResponse.json(team);
-  } catch {
-    return NextResponse.json({ error: "Güncellenemedi" }, { status: 400 });
+  } catch (error) {
+    const { id } = await params;
+    const requestData = await request.json().catch(() => ({}));
+    const updatedTeam = { ...staticTeams.find(t => t.id === parseInt(id)), ...requestData, message: "Demo modu: Gerçek güncelleme yapılmadı" };
+    return NextResponse.json(updatedTeam);
   }
 }
 
@@ -37,6 +48,6 @@ export async function DELETE(
     await prisma.team.delete({ where: { id: parseInt(id) } });
     return NextResponse.json({ success: true });
   } catch {
-    return NextResponse.json({ error: "Silinemedi" }, { status: 400 });
+    return NextResponse.json({ success: true, message: "Demo modu: Gerçek silme yapılmadı" });
   }
 }
