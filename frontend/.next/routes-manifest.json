@@ -1,0 +1,162 @@
+{
+  "version": 3,
+  "pages404": true,
+  "caseSensitive": false,
+  "basePath": "",
+  "redirects": [
+    {
+      "source": "/:path+/",
+      "destination": "/:path+",
+      "internal": true,
+      "statusCode": 308,
+      "regex": "^(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))/$"
+    }
+  ],
+  "headers": [],
+  "rewrites": {
+    "beforeFiles": [],
+    "afterFiles": [],
+    "fallback": []
+  },
+  "dynamicRoutes": [
+    {
+      "page": "/api/admin/achievements/[id]",
+      "regex": "^/api/admin/achievements/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/api/admin/achievements/(?<nxtPid>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/api/admin/announcements/[id]",
+      "regex": "^/api/admin/announcements/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/api/admin/announcements/(?<nxtPid>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/api/admin/events/[id]",
+      "regex": "^/api/admin/events/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/api/admin/events/(?<nxtPid>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/api/admin/sponsors/[id]",
+      "regex": "^/api/admin/sponsors/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/api/admin/sponsors/(?<nxtPid>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/api/admin/teams/[id]",
+      "regex": "^/api/admin/teams/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/api/admin/teams/(?<nxtPid>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/api/admin/tournaments/[id]",
+      "regex": "^/api/admin/tournaments/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/api/admin/tournaments/(?<nxtPid>[^/]+?)(?:/)?$"
+    }
+  ],
+  "staticRoutes": [
+    {
+      "page": "/",
+      "regex": "^/(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/(?:/)?$"
+    },
+    {
+      "page": "/_not-found",
+      "regex": "^/_not\\-found(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/_not\\-found(?:/)?$"
+    },
+    {
+      "page": "/admin",
+      "regex": "^/admin(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin(?:/)?$"
+    },
+    {
+      "page": "/admin/basarilar",
+      "regex": "^/admin/basarilar(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/basarilar(?:/)?$"
+    },
+    {
+      "page": "/admin/duyurular",
+      "regex": "^/admin/duyurular(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/duyurular(?:/)?$"
+    },
+    {
+      "page": "/admin/etkinlikler",
+      "regex": "^/admin/etkinlikler(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/etkinlikler(?:/)?$"
+    },
+    {
+      "page": "/admin/login",
+      "regex": "^/admin/login(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/login(?:/)?$"
+    },
+    {
+      "page": "/admin/sponsorlar",
+      "regex": "^/admin/sponsorlar(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/sponsorlar(?:/)?$"
+    },
+    {
+      "page": "/admin/takimlar",
+      "regex": "^/admin/takimlar(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/takimlar(?:/)?$"
+    },
+    {
+      "page": "/admin/turnuvalar",
+      "regex": "^/admin/turnuvalar(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/turnuvalar(?:/)?$"
+    },
+    {
+      "page": "/e-spor",
+      "regex": "^/e\\-spor(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/e\\-spor(?:/)?$"
+    },
+    {
+      "page": "/spor",
+      "regex": "^/spor(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/spor(?:/)?$"
+    }
+  ],
+  "dataRoutes": [],
+  "rsc": {
+    "header": "rsc",
+    "varyHeader": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+    "prefetchHeader": "next-router-prefetch",
+    "didPostponeHeader": "x-nextjs-postponed",
+    "contentTypeHeader": "text/x-component",
+    "suffix": ".rsc",
+    "prefetchSuffix": ".prefetch.rsc",
+    "prefetchSegmentHeader": "next-router-segment-prefetch",
+    "prefetchSegmentSuffix": ".segment.rsc",
+    "prefetchSegmentDirSuffix": ".segments"
+  },
+  "rewriteHeaders": {
+    "pathHeader": "x-nextjs-rewritten-path",
+    "queryHeader": "x-nextjs-rewritten-query"
+  }
+}
