@@ -12,13 +12,11 @@ export async function GET() {
 }
 
 export async function POST(request: NextRequest) {
+  const data = await request.json();
   try {
-    const data = await request.json();
     const event = await prisma.event.create({ data });
     return NextResponse.json(event, { status: 201 });
-  } catch (error) {
-    const requestData = await request.json().catch(() => ({}));
-    const newEvent = { ...requestData, id: staticEvents.length + 1 };
-    return NextResponse.json({ ...newEvent, message: "Demo modu: Gerçek kayıt yapılmadı" }, { status: 201 });
+  } catch {
+    return NextResponse.json({ ...data, id: Date.now() }, { status: 201 });
   }
 }

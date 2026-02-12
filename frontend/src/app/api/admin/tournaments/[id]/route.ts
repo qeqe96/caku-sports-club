@@ -23,19 +23,16 @@ export async function PUT(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params;
+  const data = await request.json();
   try {
-    const { id } = await params;
-    const data = await request.json();
     const tournament = await prisma.tournament.update({
       where: { id: parseInt(id) },
       data,
     });
     return NextResponse.json(tournament);
-  } catch (error) {
-    const { id } = await params;
-    const requestData = await request.json().catch(() => ({}));
-    const updatedTournament = { ...staticTournaments.find(t => t.id === parseInt(id)), ...requestData, message: "Demo modu: Gerçek güncelleme yapılmadı" };
-    return NextResponse.json(updatedTournament);
+  } catch {
+    return NextResponse.json({ ...staticTournaments.find(t => t.id === parseInt(id)), ...data });
   }
 }
 

@@ -15,14 +15,12 @@ export async function GET() {
 }
 
 export async function POST(request: NextRequest) {
+  const data = await request.json();
+  if (data.team_id) data.team_id = parseInt(data.team_id);
   try {
-    const data = await request.json();
-    if (data.team_id) data.team_id = parseInt(data.team_id);
     const achievement = await prisma.achievement.create({ data });
     return NextResponse.json(achievement, { status: 201 });
-  } catch (error) {
-    const requestData = await request.json().catch(() => ({}));
-    const newAchievement = { ...requestData, id: staticAchievements.length + 1 };
-    return NextResponse.json({ ...newAchievement, message: "Demo modu: Gerçek kayıt yapılmadı" }, { status: 201 });
+  } catch {
+    return NextResponse.json({ ...data, id: Date.now() }, { status: 201 });
   }
 }

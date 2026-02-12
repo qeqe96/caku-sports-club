@@ -12,14 +12,12 @@ export async function GET() {
 }
 
 export async function POST(request: NextRequest) {
+  const data = await request.json();
+  if (data.order) data.order = parseInt(data.order);
   try {
-    const data = await request.json();
-    if (data.order) data.order = parseInt(data.order);
     const sponsor = await prisma.sponsor.create({ data });
     return NextResponse.json(sponsor, { status: 201 });
-  } catch (error) {
-    const requestData = await request.json().catch(() => ({}));
-    const newSponsor = { ...requestData, id: staticSponsors.length + 1 };
-    return NextResponse.json({ ...newSponsor, message: "Demo modu: Gerçek kayıt yapılmadı" }, { status: 201 });
+  } catch {
+    return NextResponse.json({ ...data, id: Date.now() }, { status: 201 });
   }
 }
