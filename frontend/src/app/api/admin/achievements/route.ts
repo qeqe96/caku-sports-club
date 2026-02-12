@@ -1,12 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { achievements as staticAchievements } from "@/lib/data";
 
 export async function GET() {
-  const achievements = await prisma.achievement.findMany({
-    orderBy: { id: "asc" },
-    include: { team: true },
-  });
-  return NextResponse.json(achievements);
+  try {
+    const achievements = await prisma.achievement.findMany({
+      orderBy: { id: "asc" },
+      include: { team: true },
+    });
+    return NextResponse.json(achievements);
+  } catch {
+    return NextResponse.json(staticAchievements);
+  }
 }
 
 export async function POST(request: NextRequest) {
@@ -15,7 +20,9 @@ export async function POST(request: NextRequest) {
     if (data.team_id) data.team_id = parseInt(data.team_id);
     const achievement = await prisma.achievement.create({ data });
     return NextResponse.json(achievement, { status: 201 });
-  } catch {
-    return NextResponse.json({ error: "Başarı oluşturulamadı" }, { status: 400 });
+  } catch (error) {
+    const requestData = await request.json().catch(() => ({}));
+    const newAchievement = { ...requestData, id: staticAchievements.length + 1 };
+    return NextResponse.json({ ...newAchievement, message: "Demo modu: Gerçek kayıt yapılmadı" }, { status: 201 });
   }
 }
