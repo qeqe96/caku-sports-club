@@ -85,11 +85,21 @@ export default function AdminCrudPage({
       });
 
       if (res.ok) {
+        const savedItem = await res.json();
+        if (editingItem) {
+          setItems((prev) =>
+            prev.map((item) => (item.id === editingItem.id ? { ...item, ...savedItem } : item))
+          );
+        } else {
+          setItems((prev) => [...prev, savedItem]);
+        }
         setModalOpen(false);
-        fetchItems();
+      } else {
+        const err = await res.json().catch(() => ({}));
+        alert(err.error || "Kaydetme ba\u015Far\u0131s\u0131z");
       }
     } catch {
-      console.error("Kaydetme hatası");
+      alert("Sunucu hatas\u0131");
     } finally {
       setSaving(false);
     }
@@ -101,11 +111,13 @@ export default function AdminCrudPage({
         method: "DELETE",
       });
       if (res.ok) {
+        setItems((prev) => prev.filter((item) => item.id !== id));
         setDeleteConfirm(null);
-        fetchItems();
+      } else {
+        alert("Silme ba\u015Far\u0131s\u0131z");
       }
     } catch {
-      console.error("Silme hatası");
+      alert("Sunucu hatas\u0131");
     }
   };
 
@@ -158,8 +170,8 @@ export default function AdminCrudPage({
                       {col.render
                         ? col.render(item[col.key], item)
                         : item[col.key] !== null && item[col.key] !== undefined
-                        ? String(item[col.key])
-                        : "-"}
+                          ? String(item[col.key])
+                          : "-"}
                     </td>
                   ))}
                   <td className="py-3 px-4 text-right">
