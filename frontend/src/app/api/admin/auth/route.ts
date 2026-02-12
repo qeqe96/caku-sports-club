@@ -9,6 +9,14 @@ export async function POST(request: NextRequest) {
     const adminUsername = process.env.ADMIN_USERNAME || "admin";
     const adminPassword = process.env.ADMIN_PASSWORD || "admin123";
 
+    // Debug: Log environment variables (remove in production)
+    console.log("Auth Debug:", {
+      username,
+      adminUsername,
+      hasAdminPassword: !!adminPassword,
+      jwtSecret: !!process.env.JWT_SECRET
+    });
+
     // Support both plain text and bcrypt hashed passwords
     let isValid = false;
     if (adminPassword.startsWith("$2")) {
@@ -28,9 +36,10 @@ export async function POST(request: NextRequest) {
     const response = NextResponse.json({ success: true });
     response.cookies.set(getTokenCookieOptions(token));
     return response;
-  } catch {
+  } catch (error) {
+    console.error("Auth error:", error);
     return NextResponse.json(
-      { error: "Sunucu hatası" },
+      { error: "Sunucu hatası", details: error instanceof Error ? error.message : "Unknown error" },
       { status: 500 }
     );
   }
